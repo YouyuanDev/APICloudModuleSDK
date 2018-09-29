@@ -68,7 +68,7 @@ public class ZebraAndroidPrint extends UZModule implements DiscoveryHandler{
 						if(!adapter.isEnabled()){
 							adapter.enable();
 						}
-						//设置绑定过的蓝牙设备
+						//设置绑定过的蓝牙设备  
 						devices=adapter.getBondedDevices();
 						if(devices==null){
 							new HashSet<BluetoothDevice>();
