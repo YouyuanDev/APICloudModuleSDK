@@ -1,0 +1,8 @@
+{
+	modules:[
+		{
+		    name:'ZebraAndroidPrint',
+		    class:'com.apiclound.zebraprinter.ZebraAndroidPrint'
+		}
+	]
+}

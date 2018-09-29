@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>WinA</title>
+    <link rel="stylesheet" type="text/css" href="css/api.css" />
+    <link rel="stylesheet" type="text/css" href="css/box.css" />
+    <script type="text/javascript" src="script/public.js"></script>
+      <script type="text/javascript" src="script/jquery-3.3.1.min.js"></script>
+    <style>
+    	p{
+    		color:#999;
+    		padding:5px;
+    	}
+    </style>
+	<script type="text/javascript">
+	    var uzmoduledemo;
+	    var arrAddress=[];
+	    
+		apiready = function(){
+	    	uzmoduledemo = api.require('ZebraAndroidPrint');
+	    	//alert(uzmoduledemo);
+	    }
+	    function findPrinters(){
+	       uzmoduledemo.findPrinters(
+	        function(ret,err){  	                         				  
+				   if(ret.result){			 			     
+				     var data=ret.msg;
+	                 alert(JSON.stringify(data));         
+				     //var data=JSON.parse(ret.msg);  				     			    
+                     //alert(toString.call(data));
+                     //alert(toString.call(data[0]));
+                     //alert(JSON.stringify(data[0]));                
+                     for(var i=0;i<data.length;i++){
+                         var address=data[i].address;
+                         var name=data[i].name;
+                         if(arrAddress.indexOf(address)==-1){
+				            arrAddress.push(address);
+				            var Div='<div class="width:100%;padding:5px;background:#CCCCCC;"><span>'+address+'</span><span>'+name+'</span></div>';
+				            $('#ble_container').append(Div);                
+				         }        
+                     }			     				      				    				     
+				   }else{
+				     alert(ret.msg);
+				   }			 
+			}
+	       );
+	      
+	    }	  
+	    var g_mac="AC:3F:A4:A6:5F:3E"; 
+	    function changeMac(){
+	       g_mac="AC:3F:A4:A6:5F:3F"; 
+	    }   
+	    function changeMac1(){
+	       g_mac="AC:3F:A4:A6:5F:3E"; 
+	    }
+	    function connectPrinter(){
+	       var address=g_mac;
+	       var param={
+	         printerAddr:address
+	       };
+	       uzmoduledemo.connectPrinter(param,function(ret,err){	  
+	             alert(JSON.stringify(ret));           
+	             if(ret.result){
+	               alert(ret.msg);				    
+				 }else{
+				   alert(ret.msg);
+				 }		
+			});
+	    }
+	     function getPrinterStatus(){
+	         //0:准备打印!,1:打印机暂停,无法打印!,2:无法打印,因为打印头是打开的!3:打印机缺纸  4:打印机未连接! 5 获取状态时错误,未找到Mac地址! 6:其他错误
+	         var param = { printerAddr: 'AC:3F:A4:A6:5F:3E' };
+	         uzmoduledemo.getPrinterStatus(param,function(ret,err){
+				  if(ret){
+	               alert(ret.msg);				    
+				 }else{
+				   alert(ret.msg);
+				 }	
+			 });
+	    }
+	    
+	     function printImage(){
+	        // var imageUrl="fs://jietu/2018-9-4-13-57-59-920.png";
+	        var imageUrl="fs://jietu/mmexport1538107817046.jpg";
+	         var param = {imageUrl:imageUrl,x:0,y:0,width:1000,height:500,copies:1};
+	          uzmoduledemo.printImage(param,function(ret,err){
+				 if(ret){
+	               alert(ret.msg);				    
+				 }else{
+				   alert(ret.msg);
+				 }	
+			 });
+	    }
+	     function closePrinter(){
+	          var param = { printerAddr: 'AC:3F:A4:A6:5F:3E' };
+	         uzmoduledemo.closePrinter(param,function(ret,err){
+				 if(ret){
+	               alert(ret.msg);				    
+				 }else{
+				   alert(ret.msg);
+				 }	
+			 });
+	    }	    
+	</script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="main">
+        
+            <div class='itemtitle' id="ble_container">
+                <div class="width:100%;padding:5px;background:#CCCCCC;">434：434：43434</div>
+            </div>
+        	<br>
+			<div class='itemtitle'>1、搜索</div>
+				<div class="clickbtn" tapmode="active" onclick="findPrinters();" >搜索蓝牙打印机</div>     
+			</div>
+			 
+			<div class='itemtitle'>2、连接</div>
+				<div class="clickbtn" tapmode="active" onclick="connectPrinter();" >连接蓝牙打印机</div>     
+			</div>
+			 <br>
+			<div class='itemtitle'>3、查看状态</div>
+				<div class="clickbtn" tapmode="active" onclick="getPrinterStatus();" >查看蓝牙打印机状态</div>     
+			</div>
+			 <br>
+			<div class='itemtitle'>4、打印</div>
+				<div class="clickbtn" tapmode="active" onclick="printImage();" >蓝牙打印机打印图片</div>     
+			</div>
+			 <div class='itemtitle'>6、关闭</div>
+				<div class="clickbtn" tapmode="active" onclick="changeMac();" >切换MAC地址</div>     
+			</div>
+			<div class='itemtitle'>6、关闭</div>
+				<div class="clickbtn" tapmode="active" onclick="changeMac1();" >切换MAC地址</div>     
+			</div>
+			<div class='itemtitle'>6、关闭</div>
+				<div class="clickbtn" tapmode="active" onclick="closePrinter();" >关闭蓝牙打印机</div>     
+			</div>
+		</div> 
+	</div>
+</body>
+</html>
